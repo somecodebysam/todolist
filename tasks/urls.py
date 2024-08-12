@@ -4,6 +4,6 @@ from . import views
 app_name = 'tasks'
 
 urlpatterns = [
-    path('todo', views.index, name='list'),
-    path('todo/<int:pk>', views.task_details, name='details')
+    path('', views.index, name='index'),
+    path('task/<int:pk>', views.task_details, name='details')
 ]

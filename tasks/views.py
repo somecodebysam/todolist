@@ -5,6 +5,11 @@ from .models import Task
 def index(request):
     tasks =  Task.objects.all()
     context = {'tasks': tasks}
+    if request.method == "POST":
+        if 'delete' in request.POST:
+            pk = request.POST.get('delete')
+            task = Task.objects.get(id=pk)
+            task.delete()
     return render(request, 'tasks/tasks.html', context)
 
 def task_details(request,pk):
