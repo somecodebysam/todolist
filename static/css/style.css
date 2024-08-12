@@ -1,0 +1,11 @@
+.navbar ul{
+    color: antiquewhite;
+    background-color: hsl(0, 0%, 14%);
+    text-decoration: none;
+    padding: 0px;
+}
+
+.navbar li{
+    display: inline-block;
+    padding: 20px;
+}

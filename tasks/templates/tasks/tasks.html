@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title%}
+My tasks
+{% endblock %}
+
+{% block content%}
+    <table class="table table-striped  table-bordered">
+        <tr>
+        <th>Task</th>
+        <th>Due date</th>
+        <th>Status</th>
+        <th>Actions</th>
+        </tr>
+        {% for task in tasks%}
+            <tr>
+                <td><a href="{% url 'tasks:details' task.id %}">{{task.title}}</a></td>
+                <td>{{task.due_date}}</td>
+                {% if task.completed == True %}
+                <td>
+                    Compeleted
+                </td>
+                {% else %}
+                <td>
+                    In progress
+                </td>
+                {% endif %}
+                <td>
+                    <button type="button" class="btn btn-success" value="{{ task.id }}" name="edit">Edit</button>
+                    <button type="button" class="btn btn-outline-danger" value="{{ task.id }}" name="delete">Delete</button>
+                    <button type="button" class="btn btn-success" value="{{ task.id }}">Complete</button>
+
+                </td>    
+            </tr>
+        {% endfor %}
+
+    
+
+{% endblock %}
