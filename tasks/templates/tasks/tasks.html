@@ -14,28 +14,63 @@ My tasks
         <th>Status</th>
         <th>Actions</th>
         </tr>
-        {% for task in tasks%}
+        {% if not form.instance.id %}
             <tr>
-                <td><a href="{% url 'tasks:details' task.id %}" class="text-decoration-none">{{task.title}}</a></td>
-                <td>{{task.due_date}}</td>
-                {% if task.completed == True %}
-                <td>
-                    Compeleted
-                </td>
-                {% else %}
-                <td>
-                    In progress
-                </td>
-                {% endif %}
-                <td>
-                    <button type="button" class="btn btn-success" value="{{ task.id }}" name="edit">Edit</button>
-                    <button type="submit" class="btn btn-outline-danger" value="{{ task.id }}" name="delete">Delete</button>
-                    <button type="button" class="btn btn-success" value="{{ task.id }}">Complete</button>
+                {% include 'tasks/save_task.html' %}
+            </tr>  
+        {% endif %}       
+</form>
+        {% for task in tasks %}
 
-                </td>    
-            </tr>
+            <tr>
+                {% if form.instance.id == task.id %}
+                    {% include 'tasks/save_task.html' %}
+                {% else %}
+                    <td><a href="{% url 'tasks:details' task.id %}" class="text-decoration-none">{{task.title}}</a></td>
+                    <td>{{ task.due_date|date:"d/m/Y H:i" }}
+                    </td>
+                    {% if task.completed == True %}
+                    <td>
+                        Compeleted
+                    </td>
+                    {% else %}
+                    <td>
+                        In progress
+                    </td>
+                    {% endif %}
+                    <td>
+                        
+                        <div class="d-flex gap-2">
+                            {% if task.completed == False %}
+                                <form method="post" action="{% url 'tasks:index' %}"> 
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success" value="{{ task.id }}" name="complete">Complete</button>
+                                </form>
+                            {% elif task.completed == True %}
+                                <form method="post" action="{% url 'tasks:index' %}"> 
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-warning" value="{{ task.id }}" name="uncomplete">Uncomplete</button>
+                                </form>
+                            {% endif %}
+                            <form method="post" action="{% url 'tasks:index' %}"> 
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-secondary" value="{{ task.id }}" name="edit">Edit</button>
+                            </form>
+                            <form method="post" action="{% url 'tasks:index' %}"> 
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger" value="{{ task.id }}" name="delete">Delete</button>
+                            </form>
+                            
+                        </div>
+                        
+                        
+
+                    </td>
+                {% endif %}
+                </tr>
         {% endfor %}
-</from>
+    </table>
+</form>
 
     
 

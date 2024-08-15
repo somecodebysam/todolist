@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 
 class Task(models.Model):
     title = models.CharField(max_length=100)
-    details = models.TextField(max_length=500, blank=True)
     completed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     due_date = models.DateTimeField('Due Date', blank=True, null=True)
