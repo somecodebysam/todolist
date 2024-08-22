@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.db.models import Count
 from tasks.models import Task
+from django.contrib.auth.decorators import login_required
 
 
-
+@login_required(login_url="/login")
 def task_chart_view(request):
     task_stats = Task.objects.filter(author=request.user).values('completed').annotate(count=Count('id'))
     

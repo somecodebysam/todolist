@@ -5,15 +5,37 @@ from django.contrib.auth import login, logout
 
 app_name = 'users'
 
-def register(request):
-    if request.method == "POST": 
-        form = UserCreationForm(request.POST) 
-        if form.is_valid(): 
-            login(request, form.save())
-            return redirect('task:index')
+def register_view(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()  
+            login(request, user) 
+            return redirect('tasks:index')  
     else:
         form = UserCreationForm()
-    return render(request, "users/register.html", { "form": form })
+    
+    return render(request, "users/register.html", {"form": form})
 
-def login(request):
-    pass
+
+
+
+def login_view(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)  
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
+            else:
+                return redirect('tasks:index')
+    else:
+        form = AuthenticationForm()
+    
+    return render(request, "users/login.html", {"form": form})
+
+def logout_view(request):
+    if request.method == "POST":
+        logout(request)
+        return redirect('tasks:index')

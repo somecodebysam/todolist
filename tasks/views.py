@@ -2,9 +2,11 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Task
 from .forms import TaskForm
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url="/login")
 def index(request):
-    tasks =  Task.objects.all()
+    tasks = Task.objects.filter(author=request.user)
     context = {}
     context['tasks'] = tasks
     form = TaskForm()
